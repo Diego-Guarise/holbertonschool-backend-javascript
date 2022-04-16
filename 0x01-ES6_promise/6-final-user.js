@@ -8,18 +8,15 @@ export default function handleProfileSignup(firstName, lastName, fileName) {
   return Promise.allSettled([user, photo]).then((result) => {
     const array = [];
     result.forEach((item) => {
-      if (item.status === 'fulfilled') {
+      if (item.status === 'rejected') {
         array.push({
-          status : item.status,
-          value : item.value
-        })
+          status: item.status,
+          value: item.reason,
+        });
       } else {
-        array.push({
-          status : item.status,
-          value : `${item.reason}`
-      })
-    }
-  })
-  return array;
-  })
+        array.push(item);
+      }
+    });
+    return array;
+  });
 }
